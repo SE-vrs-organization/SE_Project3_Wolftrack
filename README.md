@@ -1,13 +1,13 @@
 Group 32
 Shubham Kakirde, Vinal Bagaria, Rakshita Tantry
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10211531.svg)](https://doi.org/10.5281/zenodo.14014887)
-[![GitHub Release](https://img.shields.io/badge/release-v1.0.1.1-blue)](https://github.com/SE-vrs-organization/slash-backend)
-[![Black Python](https://github.com/SE-vrs-organization/slash-backend/actions/workflows/blackformatting.yaml/badge.svg)](https://github.com/SE-vrs-organization/slash-backend/actions/workflows/blackformatting.yaml)
-[![GitHub license](https://img.shields.io/github/license/SE-vrs-organization/slash-backend)](https://github.com/SE-vrs-organization/slash-backend/blob/main/License.md)
-<a href="https://github.com/SE-vrs-organization/slash-backend/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/SE-vrs-organization/slash-backend"></a>
-<a href="https://github.com/SE-vrs-organization/slash-backend/issues"><img alt="GitHub closed issues" src="https://img.shields.io/github/issues-closed/SE-vrs-organization/slash-backend">
-<a href="https://github.com/SE-vrs-organization/slash-backend/pulls"><img alt="GitHub pull requests" src="https://img.shields.io/github/issues-pr/SE-vrs-organization/slash-backend">
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14188177.svg)](https://doi.org/10.5281/zenodo.14188177)
+[![GitHub Release](https://img.shields.io/badge/release-v1.0.1.1-blue)](https://github.com/SE-vrs-organization/SE_Project3_Wolftrack)
+[![Black Python](https://github.com/SE-vrs-organization/SE_Project3_Wolftrack/actions/workflows/blackformatting.yaml/badge.svg)](https://github.com/SE-vrs-organization/SE_Project3_Wolftrack/actions/workflows/python-build.yaml.yaml)
+[![GitHub license](https://img.shields.io/github/license/SE-vrs-organization/SE_Project3_Wolftrack)](https://github.com/SE-vrs-organization/SE_Project3_Wolftrack/blob/main/License.md)
+<a href="https://github.com/SE-vrs-organization/SE_Project3_Wolftrack/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/SE-vrs-organization/SE_Project3_Wolftrack"></a>
+<a href="https://github.com/SE-vrs-organization/SE_Project3_Wolftrack/issues"><img alt="GitHub closed issues" src="https://img.shields.io/github/issues-closed/SE-vrs-organization/SE_Project3_Wolftrack">
+<a href="https://github.com/SE-vrs-organization/SE_Project3_Wolftrack/pulls"><img alt="GitHub pull requests" src="https://img.shields.io/github/issues-pr/SE-vrs-organization/SE_Project3_Wolftrack">
 
 ## Getting Started & Installation:
 
