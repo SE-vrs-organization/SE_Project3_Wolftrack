@@ -178,7 +178,7 @@ def student():
     user = find_user(str(data_received), database)
 
     jobapplications = get_job_applications(database)
-    bookmarks = get_bookmarks(database, session["user_id"])
+    bookmarks = get_bookmarks(database, session.get("user_id", 0))
     return render_template(
         "home.html", user=user, jobapplications=jobapplications, bookmarks=bookmarks
     )
@@ -462,7 +462,7 @@ def search():
 
 @app.route("/bookmark", methods=["POST"])
 def bookmark():
-    user_id = session["user_id"]
+    user_id = session.get("user_id", 0)
 
     print(f"user {user_id} tried to bookmark a job")
     company_name = request.json.get("company_name")
@@ -488,7 +488,7 @@ def bookmark():
 
 @app.route("/test", methods=["GET"])
 def see_bookmark():
-    user_id = session["user_id"]
+    user_id = session.get("user_id", 0)
     bookmarks = get_bookmarks(database, user_id)
     return jsonify(bookmarks)
 
