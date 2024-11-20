@@ -55,9 +55,16 @@ from dbutils import (
     update_job_application_by_id,
     add_bookmark,
     get_bookmarks,
+    add_event,
+    get_user_events,
+    update_event,
+    delete_event,
 )
 from login_utils import login_user
 import requests
+from flask_wtf import FlaskForm
+from wtforms import StringField, TextAreaField, DateField, SubmitField
+from wtforms.validators import DataRequired, Length
 
 app = Flask(__name__)
 # api = Api(app)
@@ -117,6 +124,25 @@ class LoginForm(FlaskForm):
 
     submit = SubmitField("Login")
 
+class EventForm(FlaskForm):
+    title = StringField(
+        'Event Title',
+        validators=[DataRequired(), Length(min=2, max=100)],
+        render_kw={"placeholder": "Enter the event title"}
+    )
+    description = TextAreaField(
+        'Description',
+        validators=[DataRequired()],
+        render_kw={"placeholder": "Enter a short description of the event"}
+    )
+    date = DateField(
+        'Event Date',
+        validators=[DataRequired()],
+        format='%Y-%m-%d',
+        render_kw={"placeholder": "YYYY-MM-DD"}
+    )
+    submit = SubmitField('Create Event')
+
 
 @app.route("/")
 def index():
@@ -171,6 +197,17 @@ def admin():
     ##Add query
     return render_template("admin_landing.html", user=user)
 
+
+@app.route("/student", methods=["GET", "POST"])
+def student():
+    data_received = request.args.get("data")
+    user = find_user(str(data_received), database)
+
+    jobapplications = get_job_applications(database)
+    bookmarks = get_bookmarks(database, session.get("user_id", 0))
+    return render_template(
+        "home.html", user=user, jobapplications=jobapplications, bookmarks=bookmarks
+    )
 
 @app.route("/student", methods=["GET", "POST"])
 def student():

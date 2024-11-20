@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Your Events</h2>
+<ul>
+    {% for event in events %}
+        <li>
+            <strong>{{ event.title }}</strong>: 
+            {{ event.start_time|date:"F j, Y, g:i a" }} to {{ event.end_time|date:"F j, Y, g:i a" }}
+        </li>
+    {% empty %}
+        <li>No events found.</li>
+    {% endfor %}
+</ul>
+<a href="{% url 'create_event' %}" class="btn btn-primary">Create Event</a>
+{% endblock %}
