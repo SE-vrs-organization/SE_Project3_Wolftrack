@@ -55,6 +55,9 @@ from dbutils import (
     update_job_application_by_id,
     add_bookmark,
     get_bookmarks,
+    add_event,
+    get_user_events,
+    delete_event,
     add_resume,
     get_resume,
     add_comments,
@@ -188,9 +191,20 @@ def admin():
             relative_path = resume_path  # Use as is if no conversion needed
         processed_resumes.append((user_id, relative_path, comments))
     ##Add query
-    
+
     return render_template("admin_landing.html", user=user, resumes = processed_resumes)
 
+
+@app.route("/student", methods=["GET", "POST"])
+def student():
+    data_received = request.args.get("data")
+    user = find_user(str(data_received), database)
+
+    jobapplications = get_job_applications(database)
+    bookmarks = get_bookmarks(database, session.get("user_id", 0))
+    return render_template(
+        "home.html", user=user, jobapplications=jobapplications, bookmarks=bookmarks
+    )
 
 @app.route("/student", methods=["GET", "POST"])
 def student():
