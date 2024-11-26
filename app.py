@@ -200,8 +200,10 @@ def student():
     print("user: ",user)
     jobapplications = get_job_applications(database)
     bookmarks = get_bookmarks(database, session.get("user_id", 0))
-    events = get_user_events(database, user[0])
-    print("Events: ",events)
+    events=[]
+    if user is not None:
+        events = get_user_events(database, user[0])
+        print("Events: ",events)
     return render_template(
         "home.html", user=user, jobapplications=jobapplications, bookmarks=bookmarks, events=events
     )
