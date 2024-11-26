@@ -12,7 +12,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 import sqlite3
 
-
 def create_tables(db):
     conn = sqlite3.connect(db)
     cursor = conn.cursor()
@@ -52,6 +51,13 @@ def create_tables(db):
     )
     """
     )
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS resume_review (
+        user_id TEXT PRIMARY KEY,
+        resume TEXT,
+        comments TEXT
+    )
+    """)
     conn.commit()
     conn.close()
 
@@ -174,3 +180,64 @@ def get_bookmarks(db, user):
     rows = cursor.fetchall()
     conn.close()
     return rows
+
+def add_resume(db,filepath, user):
+    conn = sqlite3.connect(db)
+    cursor = conn.cursor()
+   
+    # Inserting rows into the 'resume_review' table
+    cursor.execute(
+        """
+            INSERT OR REPLACE INTO resume_review (user_id, resume, comments) 
+            VALUES (?, ?, ?)
+        """,
+        (
+            user,
+            filepath,
+            None,
+        ),
+    )
+    conn.commit()
+    conn.close()
+
+
+def get_resume(db):
+    conn = sqlite3.connect(db)
+    cursor = conn.cursor()
+    cursor.execute(
+        """
+            SELECT * FROM resume_review
+        """,
+    )
+    rows = cursor.fetchall()
+    print(rows)
+    conn.close()
+    return rows
+
+def add_comments(db,comments,user):
+    conn = sqlite3.connect(db)
+    cursor = conn.cursor()
+    cursor.execute(
+        """
+            UPDATE resume_review 
+            SET comments = ? 
+            WHERE user_id = ?
+        """,
+        (
+            comments, 
+            user,
+        )
+    )
+    conn.commit()
+    conn.close()
+
+def get_comments(db,user):
+    conn = sqlite3.connect(db)
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT resume, comments FROM resume_review
+        WHERE user_id = ?
+    """, (user,))
+    data = cursor.fetchall()
+    conn.close()
+    return data

@@ -234,7 +234,10 @@
         >
       </ul>
       <ul class="navbar-nav ml-auto">
-        <a href="/chat_gpt_analyzer" style="color: #facaca; text-decoration: none">Resume Suggestions</a>
+        <a 
+    href="{{ url_for('student_comments', user_id=user[2]) }}" 
+    style="color: #facaca; text-decoration: none"
+  >Admin Review on Resume</a>
     </ul>
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
@@ -414,7 +417,7 @@
         <!-- Right Sidebar -->
         <div class="col-sm-3 sidenav sidenav-right">
           <div class="section-heading">
-            CV
+            Submit Resume/CV for review
             <!--Padding is optional-->
             <div class="section-division"></div>
             <div class="section-content">
