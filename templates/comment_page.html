@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>WolfTrack - Add Comment</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    crossorigin="anonymous">
+</head>
+
+<body>
+  <div class="container">
+    <h1>Add Comment </h1>
+    <form action="{{ url_for('save_comment') }}" method="POST">
+      <!-- Hidden input to pass user_id -->
+      <input type="hidden" id = "user_id" name="user_id" value="{{ user_id }}">
+      <!-- Admin user ID -->
+      <input type="hidden" name="admin_user_id" value="{{ admin_user_id }}">
+
+      <!-- Textarea for comments -->
+      <div class="form-group">
+        <label for="comments">Comments:</label>
+        <textarea name="comments" id="comments" class="form-control" rows="5" required></textarea>
+      </div>
+
+      <!-- Submit button -->
+      <button type="submit" class="btn btn-success">Save</button>
+    </form>
+  </div>
+</body>
+
+</html>
