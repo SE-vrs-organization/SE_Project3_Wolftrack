@@ -4,6 +4,41 @@
     <title>WolfTrack - Home</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@6.1.15/index.global.min.js'></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                events: [
+                    {% for row in events %}
+                    {
+                        title: "{{ row[1] | safe }}",
+                        start: "{{ row[3] | safe }}",
+                        end: "{{ row[4] | safe }}"
+                    },
+                    {% endfor %}
+                ],
+                aspectRatio: 1,
+                height: '100%',
+                contentHeight: 'auto',
+                eventClick: function (info) {
+                    // Prevent default behavior (e.g., if a URL is set)
+                    info.jsEvent.preventDefault();
+
+                    // Redirect to a URL if specified
+                    if (info.event.url) {
+                        window.open(info.event.url, '_blank'); // Opens in a new tab
+                    } else {
+                        // Handle other actions (e.g., show details in a modal)
+                        alert('Event: ' + info.event.title);
+                    }
+                }
+            });
+            calendar.render();
+        });
+    </script>
 
     <!-- Google Font -->
     <link
@@ -339,26 +374,10 @@
               <br>
             </div>
             <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Upcoming Events</h5>
-                  <table class = "table table-hover table-dark">
-                    <tr>
-                      <th>Title</th>
-                      <th>Description</th>
-                      <th>Start Date</th>
-                      <th>End Date</th>
-                    </tr>
-
-                    {% for row in events %}
-                    <tr>
-                      <td>{{ row[1] }}</td>
-                      <td>{{ row[2] }}</td>
-                      <td>{{ row[3] }}</td>
-                      <td>{{ row[4] }}</td>
-                    </tr>
-                    {%endfor%}
-                    </table>
-              </div>
+                <div class="card-body">
+                    <h5 class="card-title">Upcoming Events</h5>
+                    <div id="calendar"></div>
+                </div>
             </div>
 
           </center>
