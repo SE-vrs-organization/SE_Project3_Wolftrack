@@ -57,8 +57,8 @@ from dbutils import (
     get_bookmarks,
     add_event,
     get_user_events,
-    update_event,
-    delete_event,
+    # update_event,
+    # delete_event,
 )
 from login_utils import login_user
 import requests
@@ -124,25 +124,6 @@ class LoginForm(FlaskForm):
 
     submit = SubmitField("Login")
 
-class EventForm(FlaskForm):
-    title = StringField(
-        'Event Title',
-        validators=[DataRequired(), Length(min=2, max=100)],
-        render_kw={"placeholder": "Enter the event title"}
-    )
-    description = TextAreaField(
-        'Description',
-        validators=[DataRequired()],
-        render_kw={"placeholder": "Enter a short description of the event"}
-    )
-    date = DateField(
-        'Event Date',
-        validators=[DataRequired()],
-        format='%Y-%m-%d',
-        render_kw={"placeholder": "YYYY-MM-DD"}
-    )
-    submit = SubmitField('Create Event')
-
 
 @app.route("/")
 def index():
@@ -197,28 +178,42 @@ def admin():
     ##Add query
     return render_template("admin_landing.html", user=user)
 
-
 @app.route("/student", methods=["GET", "POST"])
 def student():
-    data_received = request.args.get("data")
-    user = find_user(str(data_received), database)
-
+    user_id = request.args.get("data")
+    user = find_user(str(user_id), database)
+    print("user: ",user)
     jobapplications = get_job_applications(database)
     bookmarks = get_bookmarks(database, session.get("user_id", 0))
+    events = get_user_events(database, user[0])
+    print("Events: ",events)
     return render_template(
-        "home.html", user=user, jobapplications=jobapplications, bookmarks=bookmarks
+        "home.html", user=user, jobapplications=jobapplications, bookmarks=bookmarks, events=events
     )
 
-@app.route("/student", methods=["GET", "POST"])
-def student():
-    data_received = request.args.get("data")
-    user = find_user(str(data_received), database)
+@app.route("/post_event", methods=["POST"])
+def post_event():
+    if request.method == "POST":
+        title = request.form["title"]
+        description = request.form["description"]
+        start_date = request.form["start_date"]
+        end_date = request.form["end_date"]
+        user_id = request.form["user_id"]
 
-    jobapplications = get_job_applications(database)
-    bookmarks = get_bookmarks(database, session.get("user_id", 0))
-    return render_template(
-        "home.html", user=user, jobapplications=jobapplications, bookmarks=bookmarks
-    )
+        event = {
+            "title": title,
+            "description": description,
+            "start_date": start_date,
+            "end_date": end_date
+        }
+        print("Event: ",event)
+        print("User Id: ",user_id)
+        user = find_user(str(user_id), database)
+        print("user: ", user)
+        add_event(database, event, user[0])
+
+        flash("Event Added!")
+        return redirect(url_for("student", data=user_id))
 
 
 @app.route("/student/<status>", methods=["GET", "POST"])
