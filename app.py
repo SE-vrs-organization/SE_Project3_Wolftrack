@@ -55,6 +55,10 @@ from dbutils import (
     update_job_application_by_id,
     add_bookmark,
     get_bookmarks,
+    add_resume,
+    get_resume,
+    add_comments,
+    get_comments,
 )
 from login_utils import login_user
 import requests
@@ -168,8 +172,24 @@ def signup():
 def admin():
     data_received = request.args.get("data")
     user = find_user(str(data_received), database)
+    resumes = get_resume(
+        database,
+    )
+    print(resumes)
+    processed_resumes = []
+    for resume in resumes:
+        user_id, resume_path, comments = resume
+        # Convert absolute path to relative path
+        if "Controller\\resume\\" in resume_path:
+            relative_path = resume_path.split("Controller\\resume\\")[-1]
+            relative_path = relative_path.replace("\\", "/")  # Convert Windows path to HTML-friendly
+            relative_path = f"Controller/resume/{relative_path}"  # Construct relative path
+        else:
+            relative_path = resume_path  # Use as is if no conversion needed
+        processed_resumes.append((user_id, relative_path, comments))
     ##Add query
-    return render_template("admin_landing.html", user=user)
+    
+    return render_template("admin_landing.html", user=user, resumes = processed_resumes)
 
 
 @app.route("/student", methods=["GET", "POST"])
@@ -339,31 +359,48 @@ def job_profile_analyze():
 
 filename = ""
 
-
 @app.route("/student/upload", methods=["POST"])
 def upload():
+    # Define the target directory for resumes
     APP_ROOT = os.path.dirname(os.path.abspath(__file__))
-    target = os.path.join(APP_ROOT, "Controller\\resume\\")
+    target = os.path.join(APP_ROOT, "static", "Controller", "resume")
 
+    # Ensure the target directory exists
     if not os.path.isdir(target):
-        os.mkdir(target)
-    if len(os.listdir(target)) != 0:
-        os.remove(target + os.listdir(target)[0])
+        os.makedirs(target)
 
+    # Get user ID from form
+    user_id = request.form.get("user_id")
+    if not user_id:
+        return "User ID is required", 400  # Return error if user_id is missing
+
+    # Validate the user exists in the database
+    user = find_user(str(user_id), database)
+    if not user:
+        return "User not found", 404  # Return error if user not found
+    print("User:", user)
+
+    # Process uploaded files
     for file in request.files.getlist("file"):
+        if file.filename == "":
+            return "No file selected", 400  # Return error if no file is uploaded
+
+        # Use the original filename
         filename = file.filename
-        destination = "/".join([target, filename])
+
+        # Save the file in the target directory
+        destination = os.path.join(target, filename)
         file.save(destination)
 
-    user = request.form["user_id"]
+        # Save the relative path in the database
+        relative_path = f"Controller/resume/{filename}"
 
-    user = find_user(str(user), database)
-    print("Userrrrrr", user)
+        add_resume(database, relative_path, user_id)
 
+    # Return the rendered home page
     return render_template(
         "home.html", data=data, upcoming_events=upcoming_events, user=user
     )
-
 
 @app.route("/student/analyze_resume", methods=["GET"])
 def view_ResumeAna():
@@ -491,6 +528,34 @@ def see_bookmark():
     user_id = session.get("user_id", 0)
     bookmarks = get_bookmarks(database, user_id)
     return jsonify(bookmarks)
+
+@app.route("/comment/<user_id>/<admin_user_id>", methods=["GET"])
+def comment_page(user_id,admin_user_id):
+    return render_template("comment_page.html", user_id=user_id, admin_user_id=admin_user_id)
+
+@app.route("/save_comment", methods=["POST"])
+def save_comment():
+    user_id = request.form.get("user_id")
+    comments = request.form.get("comments")
+    admin_user_id = request.form.get("admin_user_id")
+    print('admin_user_id')
+    if not user_id or not comments:
+        return "Invalid input", 400
+
+    add_comments(
+        database,
+        comments,
+        user_id,
+   )
+    return redirect(url_for("admin", data=admin_user_id))
+
+@app.route("/student_comments/<user_id>", methods=["GET"])
+def student_comments(user_id):
+    data = get_comments(database,user_id)
+
+    comments = [{"resume": row[0], "comments": row[1]} for row in data]
+
+    return render_template("student_comments.html", comments=comments,user_id = user_id)
 
 
 if __name__ == "__main__":
