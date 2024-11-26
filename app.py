@@ -57,7 +57,6 @@ from dbutils import (
     get_bookmarks,
     add_event,
     get_user_events,
-    delete_event,
     add_resume,
     get_resume,
     add_comments,
