@@ -330,25 +330,34 @@
             <br />
             <div id="container" class="daily-target-chart"></div>
             <br />
+            <div >
+                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#eventmodal">Add New Event</button>
+                    <form action="{{ url_for('post_event') }}" method="POST">
+                    </form>
+
+              <br>
+              <br>
+            </div>
             <div class="card">
               <div class="card-body">
                 <h5 class="card-title">Upcoming Events</h5>
-                <table class="table table-hover">
-                  <thead>
+                  <table class = "table table-hover table-dark">
                     <tr>
-                      <th scope="col">Company</th>
-                      <th scope="col">Due Date</th>
+                      <th>Title</th>
+                      <th>Description</th>
+                      <th>Start Date</th>
+                      <th>End Date</th>
                     </tr>
-                  </thead>
-                  <tbody>
-                    {% for item in upcoming_events %}
+
+                    {% for row in events %}
                     <tr>
-                      <td>{{ item.company }}</td>
-                      <td>{{ item.duedate }}</td>
+                      <td>{{ row[1] }}</td>
+                      <td>{{ row[2] }}</td>
+                      <td>{{ row[3] }}</td>
+                      <td>{{ row[4] }}</td>
                     </tr>
-                    {% endfor %}
-                  </tbody>
-                </table>
+                    {%endfor%}
+                    </table>
               </div>
             </div>
 
