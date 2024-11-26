@@ -51,6 +51,21 @@ def create_tables(db):
     )
     """
     )
+
+    cursor.execute(
+        """
+        CREATE TABLE IF NOT EXISTS events (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT NOT NULL,
+            description TEXT,
+            start_date TEXT NOT NULL,
+            end_date TEXT NOT NULL,
+            user_id INTEGER NOT NULL,
+            FOREIGN KEY (user_id) REFERENCES client (id)
+        )
+    """
+    )
+
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS resume_review (
         user_id TEXT PRIMARY KEY,
@@ -181,10 +196,66 @@ def get_bookmarks(db, user):
     conn.close()
     return rows
 
+def add_event(db, event, user_id):
+    print("Db event: ",event)
+    conn = sqlite3.connect(db)
+    cursor = conn.cursor()
+    cursor.execute(
+        """
+        INSERT INTO events (title, description, start_date, end_date, user_id)
+        VALUES (?, ?, ?, ?, ?)
+        """,
+        (
+            event["title"],
+            event["description"],
+            event["start_date"],
+            event["end_date"],
+            user_id,
+        ),
+    )
+    conn.commit()
+    conn.close()
+
+def get_user_events(db, user_id):
+    print("User id: ",user_id)
+    conn = sqlite3.connect(db)
+    cursor = conn.cursor()
+    cursor.execute(
+        """
+        SELECT id, title, description, start_date, end_date FROM events WHERE user_id = ? ORDER BY start_date
+        """,
+        (user_id,)
+    )
+    rows = cursor.fetchall()
+    conn.close()
+    return rows
+
+# def update_event(db, event_id, event_data):
+#     conn = sqlite3.connect(db)
+#     cursor = conn.cursor()
+#     cursor.execute(
+#         """
+#         UPDATE events SET title = ?, description = ?, start_time = ?, end_time = ?
+#         WHERE id = ?
+#         """,
+#         (event_data["title"], event_data.get("description"), event_data["start_time"], event_data["end_time"], event_id),
+#     )
+#     conn.commit()
+#     conn.close()
+#
+# def delete_event(db, event_id):
+#     conn = sqlite3.connect(db)
+#     cursor = conn.cursor()
+#     cursor.execute("DELETE FROM events WHERE id = ?", (event_id,))
+#     conn.commit()
+#     conn.close()
+
+
+
 def add_resume(db,filepath, user):
     conn = sqlite3.connect(db)
     cursor = conn.cursor()
-   
+
     # Inserting rows into the 'resume_review' table
     cursor.execute(
         """
@@ -224,7 +295,7 @@ def add_comments(db,comments,user):
             WHERE user_id = ?
         """,
         (
-            comments, 
+            comments,
             user,
         )
     )

@@ -55,6 +55,8 @@ from dbutils import (
     update_job_application_by_id,
     add_bookmark,
     get_bookmarks,
+    add_event,
+    get_user_events,
     add_resume,
     get_resume,
     add_comments,
@@ -188,20 +190,45 @@ def admin():
             relative_path = resume_path  # Use as is if no conversion needed
         processed_resumes.append((user_id, relative_path, comments))
     ##Add query
-    
-    return render_template("admin_landing.html", user=user, resumes = processed_resumes)
 
+    return render_template("admin_landing.html", user=user, resumes = processed_resumes)
 
 @app.route("/student", methods=["GET", "POST"])
 def student():
-    data_received = request.args.get("data")
-    user = find_user(str(data_received), database)
-
+    user_id = request.args.get("data")
+    user = find_user(str(user_id), database)
+    print("user: ",user)
     jobapplications = get_job_applications(database)
     bookmarks = get_bookmarks(database, session.get("user_id", 0))
+    events = get_user_events(database, user[0])
+    print("Events: ",events)
     return render_template(
-        "home.html", user=user, jobapplications=jobapplications, bookmarks=bookmarks
+        "home.html", user=user, jobapplications=jobapplications, bookmarks=bookmarks, events=events
     )
+
+@app.route("/post_event", methods=["POST"])
+def post_event():
+    if request.method == "POST":
+        title = request.form["title"]
+        description = request.form["description"]
+        start_date = request.form["start_date"]
+        end_date = request.form["end_date"]
+        user_id = request.form["user_id"]
+
+        event = {
+            "title": title,
+            "description": description,
+            "start_date": start_date,
+            "end_date": end_date
+        }
+        print("Event: ",event)
+        print("User Id: ",user_id)
+        user = find_user(str(user_id), database)
+        print("user: ", user)
+        add_event(database, event, user[0])
+
+        flash("Event Added!")
+        return redirect(url_for("student", data=user_id))
 
 
 @app.route("/student/<status>", methods=["GET", "POST"])
