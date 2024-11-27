@@ -4,6 +4,7 @@ Shubham Kakirde, Vinal Bagaria, Rakshita Tantry
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14188177.svg)](https://doi.org/10.5281/zenodo.14188177)
 [![GitHub Release](https://img.shields.io/badge/release-v1.0.1.1-blue)](https://github.com/SE-vrs-organization/SE_Project3_Wolftrack)
+[![Black Python](https://github.com/SE-vrs-organization/SE_Project3_Wolftrack/actions/workflows/blackformatting.yaml/badge.svg)](https://github.com/SE-vrs-organization/SE_Project3_Wolftrack/actions/workflows/blackformatting.yaml.yml)
 [![Pytest](https://github.com/SE-vrs-organization/SE_Project3_Wolftrack/actions/workflows/python-build.yml/badge.svg)](https://github.com/SE-vrs-organization/SE_Project3_Wolftrack/actions/workflows/python-build.yml)
 [![GitHub license](https://img.shields.io/github/license/SE-vrs-organization/SE_Project3_Wolftrack)](https://github.com/SE-vrs-organization/SE_Project3_Wolftrack/blob/main/License.md)
 <a href="https://github.com/SE-vrs-organization/SE_Project3_Wolftrack/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/SE-vrs-organization/SE_Project3_Wolftrack"></a>
@@ -20,8 +21,6 @@ Shubham Kakirde, Vinal Bagaria, Rakshita Tantry
   <a href="#computer-technology-used">Technology Used</a>
   ::
   <a href="#bulb-use-case">Use Case</a>
-  ::
-  <a href="#page_facing_up-why">Why</a>
   ::
   <a href="#golf-future-roadmap">Future Roadmap</a>
   ::
@@ -49,7 +48,7 @@ Shubham Kakirde, Vinal Bagaria, Rakshita Tantry
 
 - ### Prerequisite:
 
-  - Download [Python3.x](https://www.python.org/downloads/).
+  - Download [Python3.9](https://www.python.org/downloads/).
 
 - ### Installation:
 
@@ -69,6 +68,11 @@ Shubham Kakirde, Vinal Bagaria, Rakshita Tantry
 
     `pip install -r requirements.txt`
 
+- ### Configuring Database Connection
+  Install SQLite3 from https://www.sqlite.org/download.html
+  Database.db has the database information
+  command to execute the database - sqlite3 database.db  
+     
 - ### Run Instructions
 
   **To run/test the site locally:**
@@ -77,7 +81,7 @@ Shubham Kakirde, Vinal Bagaria, Rakshita Tantry
 
   - Navigate to project directory.
 
-  - Run `python main.py` or `python3 main.py` <br> <br>
+  - Run `python app.py` or `python3 app.py` <br> <br>
     If there is a certificate error coming up for nltk stopwords download: <br>
 
     - search for "Install Certificates.command" in finder and open it. Its a script that will install required Certificates. <br>
