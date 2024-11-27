@@ -1,6 +1,7 @@
 Group 32
 Shubham Kakirde, Vinal Bagaria, Rakshita Tantry
 
+
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14188177.svg)](https://doi.org/10.5281/zenodo.14188177)
 [![GitHub Release](https://img.shields.io/badge/release-v1.0.1.1-blue)](https://github.com/SE-vrs-organization/SE_Project3_Wolftrack)
 [![Pytest](https://github.com/SE-vrs-organization/SE_Project3_Wolftrack/actions/workflows/python-build.yml/badge.svg)](https://github.com/SE-vrs-organization/SE_Project3_Wolftrack/actions/workflows/python-build.yml)
