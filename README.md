@@ -38,7 +38,7 @@ Shubham Kakirde, Vinal Bagaria, Rakshita Tantry
 :movie_camera: Checkout our video
 ---
 
-[[https://youtu.be/lyx93075Xkw]](https://www.youtube.com/watch?v=ijOOYHe2Ywc)
+[[https://youtu.be/lyx93075Xkw]](https://youtu.be/lyx93075Xkw)
 
 
 ---
