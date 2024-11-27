@@ -181,8 +181,6 @@ Wolftrack7.0 is an online platform for the easy and efficient organization in yo
     - Upcoming application deadlines.  
     - Scheduled interview dates.  
     - Event registrations or job postings.  
-  - **Impact**:  
-    Helps users stay organized and minimizes the risk of missing critical deadlines, especially for those who might not frequently check emails or the platform.
 
 ---
 
@@ -197,8 +195,6 @@ Wolftrack7.0 is an online platform for the easy and efficient organization in yo
   - **Advanced Features**:  
     - Schedule virtual coffee chats or Q&A sessions with mentors.  
     - Showcase success stories from users who benefited from networking on the platform.  
-  - **Impact**:  
-    Supports career growth by offering users direct access to valuable advice, insights, and opportunities from experienced professionals.
 
 ---
 
@@ -212,11 +208,7 @@ Wolftrack7.0 is an online platform for the easy and efficient organization in yo
   - Allow users to refine recommendations by:  
     - Specifying preferred locations, roles, or industries.  
     - Excluding unwanted job types (e.g., internships for full-time job seekers).  
-  - **Advanced Features**:  
-    - Highlight trending jobs or roles with high demand.  
-    - Suggest certifications or skills to qualify for specific roles.  
-  - **Impact**:  
-    Saves time and effort in job searching while increasing the likelihood of users finding the most suitable opportunities.
+
 
 ---
 
@@ -225,13 +217,9 @@ Wolftrack7.0 is an online platform for the easy and efficient organization in yo
 - **Details**:  
   - Add a comprehensive **Interview Prep Tab** with:  
     - **Behavioral Questions**: Common questions and sample answers for topics like teamwork, leadership, and conflict resolution.  
-    - **Role-Specific Questions**: Technical and domain-specific questions for various roles (e.g., software developer, data analyst, marketing manager).  
-    - **Mock Interview Simulations**: AI-powered tools that simulate interview scenarios and provide feedback on responses.  
     - **Video Tutorials**: Access to curated videos on improving interview skills, body language, and communication.  
   - Enable users to track their progress with a checklist of interview preparation steps.  
   - Provide downloadable guides, templates, and recommended reading material.  
-  - **Impact**:  
-    Boosts user confidence, reduces preparation time, and enhances performance in interviews, increasing their chances of success.
 
 ---
 
