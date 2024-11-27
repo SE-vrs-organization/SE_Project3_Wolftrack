@@ -12,6 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 import sqlite3
 
+
 def create_tables(db):
     conn = sqlite3.connect(db)
     cursor = conn.cursor()
@@ -66,13 +67,15 @@ def create_tables(db):
     """
     )
 
-    cursor.execute("""
+    cursor.execute(
+        """
     CREATE TABLE IF NOT EXISTS resume_review (
         user_id TEXT PRIMARY KEY,
         resume TEXT,
         comments TEXT
     )
-    """)
+    """
+    )
     conn.commit()
     conn.close()
 
@@ -196,8 +199,9 @@ def get_bookmarks(db, user):
     conn.close()
     return rows
 
+
 def add_event(db, event, user_id):
-    print("Db event: ",event)
+    print("Db event: ", event)
     conn = sqlite3.connect(db)
     cursor = conn.cursor()
     cursor.execute(
@@ -216,19 +220,21 @@ def add_event(db, event, user_id):
     conn.commit()
     conn.close()
 
+
 def get_user_events(db, user_id):
-    print("User id: ",user_id)
+    print("User id: ", user_id)
     conn = sqlite3.connect(db)
     cursor = conn.cursor()
     cursor.execute(
         """
         SELECT id, title, description, start_date, end_date FROM events WHERE user_id = ? ORDER BY start_date
         """,
-        (user_id,)
+        (user_id,),
     )
     rows = cursor.fetchall()
     conn.close()
     return rows
+
 
 # def update_event(db, event_id, event_data):
 #     conn = sqlite3.connect(db)
@@ -251,8 +257,7 @@ def get_user_events(db, user_id):
 #     conn.close()
 
 
-
-def add_resume(db,filepath, user):
+def add_resume(db, filepath, user):
     conn = sqlite3.connect(db)
     cursor = conn.cursor()
 
@@ -285,7 +290,8 @@ def get_resume(db):
     conn.close()
     return rows
 
-def add_comments(db,comments,user):
+
+def add_comments(db, comments, user):
     conn = sqlite3.connect(db)
     cursor = conn.cursor()
     cursor.execute(
@@ -297,18 +303,22 @@ def add_comments(db,comments,user):
         (
             comments,
             user,
-        )
+        ),
     )
     conn.commit()
     conn.close()
 
-def get_comments(db,user):
+
+def get_comments(db, user):
     conn = sqlite3.connect(db)
     cursor = conn.cursor()
-    cursor.execute("""
+    cursor.execute(
+        """
         SELECT resume, comments FROM resume_review
         WHERE user_id = ?
-    """, (user,))
+    """,
+        (user,),
+    )
     data = cursor.fetchall()
     conn.close()
     return data

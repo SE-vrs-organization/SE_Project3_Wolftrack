@@ -184,29 +184,39 @@ def admin():
         # Convert absolute path to relative path
         if "Controller\\resume\\" in resume_path:
             relative_path = resume_path.split("Controller\\resume\\")[-1]
-            relative_path = relative_path.replace("\\", "/")  # Convert Windows path to HTML-friendly
-            relative_path = f"Controller/resume/{relative_path}"  # Construct relative path
+            relative_path = relative_path.replace(
+                "\\", "/"
+            )  # Convert Windows path to HTML-friendly
+            relative_path = (
+                f"Controller/resume/{relative_path}"  # Construct relative path
+            )
         else:
             relative_path = resume_path  # Use as is if no conversion needed
         processed_resumes.append((user_id, relative_path, comments))
     ##Add query
 
-    return render_template("admin_landing.html", user=user, resumes = processed_resumes)
+    return render_template("admin_landing.html", user=user, resumes=processed_resumes)
+
 
 @app.route("/student", methods=["GET", "POST"])
 def student():
     user_id = request.args.get("data")
     user = find_user(str(user_id), database)
-    print("user: ",user)
+    print("user: ", user)
     jobapplications = get_job_applications(database)
     bookmarks = get_bookmarks(database, session.get("user_id", 0))
-    events=[]
+    events = []
     if user is not None:
         events = get_user_events(database, user[0])
-        print("Events: ",events)
+        print("Events: ", events)
     return render_template(
-        "home.html", user=user, jobapplications=jobapplications, bookmarks=bookmarks, events=events
+        "home.html",
+        user=user,
+        jobapplications=jobapplications,
+        bookmarks=bookmarks,
+        events=events,
     )
+
 
 @app.route("/post_event", methods=["POST"])
 def post_event():
@@ -221,10 +231,10 @@ def post_event():
             "title": title,
             "description": description,
             "start_date": start_date,
-            "end_date": end_date
+            "end_date": end_date,
         }
-        print("Event: ",event)
-        print("User Id: ",user_id)
+        print("Event: ", event)
+        print("User Id: ", user_id)
         user = find_user(str(user_id), database)
         print("user: ", user)
         add_event(database, event, user[0])
@@ -388,6 +398,7 @@ def job_profile_analyze():
 
 filename = ""
 
+
 @app.route("/student/upload", methods=["POST"])
 def upload():
     # Define the target directory for resumes
@@ -427,6 +438,7 @@ def upload():
         add_resume(database, relative_path, user_id)
 
     return redirect(url_for("student", data=user))
+
 
 @app.route("/student/analyze_resume", methods=["GET"])
 def view_ResumeAna():
@@ -555,16 +567,20 @@ def see_bookmark():
     bookmarks = get_bookmarks(database, user_id)
     return jsonify(bookmarks)
 
+
 @app.route("/comment/<user_id>/<admin_user_id>", methods=["GET"])
-def comment_page(user_id,admin_user_id):
-    return render_template("comment_page.html", user_id=user_id, admin_user_id=admin_user_id)
+def comment_page(user_id, admin_user_id):
+    return render_template(
+        "comment_page.html", user_id=user_id, admin_user_id=admin_user_id
+    )
+
 
 @app.route("/save_comment", methods=["POST"])
 def save_comment():
     user_id = request.form.get("user_id")
     comments = request.form.get("comments")
     admin_user_id = request.form.get("admin_user_id")
-    print('admin_user_id')
+    print("admin_user_id")
     if not user_id or not comments:
         return "Invalid input", 400
 
@@ -572,16 +588,17 @@ def save_comment():
         database,
         comments,
         user_id,
-   )
+    )
     return redirect(url_for("admin", data=admin_user_id))
+
 
 @app.route("/student_comments/<user_id>", methods=["GET"])
 def student_comments(user_id):
-    data = get_comments(database,user_id)
+    data = get_comments(database, user_id)
 
     comments = [{"resume": row[0], "comments": row[1]} for row in data]
 
-    return render_template("student_comments.html", comments=comments,user_id = user_id)
+    return render_template("student_comments.html", comments=comments, user_id=user_id)
 
 
 if __name__ == "__main__":

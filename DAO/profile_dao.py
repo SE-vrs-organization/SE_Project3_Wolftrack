@@ -1,5 +1,6 @@
 from sql_helper import sql_helper
 
+
 class profile_dao:
     def create_profile(self):
         pass
@@ -12,5 +13,3 @@ class profile_dao:
 
     def delete_profile(self):
         pass
-
-

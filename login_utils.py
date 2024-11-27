@@ -1,4 +1,4 @@
-'''
+"""
 MIT License
 
 Copyright (c) 2023 Shonil B, Akshada M, Rutuja R, Sakshi B
@@ -8,7 +8,8 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-'''
+"""
+
 from flask import session, request
 from hashlib import sha512
 
@@ -16,13 +17,14 @@ from hashlib import sha512
 def get_headers():
     user_agent = request.headers.get("User-Agent")
     address = request.headers.get("X-Forwarded-For", request.remote_addr)
-    return user_agent,address
+    return user_agent, address
+
 
 def get_session_identifier():
-    user_agent,address = get_headers()
+    user_agent, address = get_headers()
     if user_agent is not None:
         user_agent = user_agent.encode("utf-8")
-    
+
     if address is not None:
         # An 'X-Forwarded-For' header includes a comma separated list of the
         # addresses, the first address being the actual remote address.
@@ -34,7 +36,8 @@ def get_session_identifier():
     h.update(base.encode("utf8"))
     return h.hexdigest()
 
-def login_user(app,user, remember=False, duration=None, force=False, fresh=True):
+
+def login_user(app, user, remember=False, duration=None, force=False, fresh=True):
     """
     Logs a user in. You should pass the actual user object to this. If the
     user's `is_active` property is ``False``, they will not be logged in
@@ -58,12 +61,12 @@ def login_user(app,user, remember=False, duration=None, force=False, fresh=True)
         marked as not "fresh". Defaults to ``True``.
     :type fresh: bool
     """
-    print("###USER",user)
+    print("###USER", user)
     session["user_id"] = user[0]
     session["type"] = user[4]
     session["_fresh"] = fresh
     session["_id"] = get_session_identifier()
-    print("IDENTIFIER##########",get_session_identifier())
+    print("IDENTIFIER##########", get_session_identifier())
     if remember:
         session["_remember"] = "set"
         if duration is not None:
@@ -77,5 +80,5 @@ def login_user(app,user, remember=False, duration=None, force=False, fresh=True)
                 raise Exception(
                     f"duration must be a datetime.timedelta, instead got: {duration}"
                 ) from e
- 
+
     return True

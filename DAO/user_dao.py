@@ -1,5 +1,3 @@
-
-
 class user_dao:
     def __init__(self):
         pass
@@ -15,4 +13,3 @@ class user_dao:
 
     def delete_user(self):
         pass
-

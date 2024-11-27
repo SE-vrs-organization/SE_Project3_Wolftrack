@@ -69,10 +69,10 @@ Shubham Kakirde, Vinal Bagaria, Rakshita Tantry
     `pip install -r requirements.txt`
 
 - ### Configuring Database Connection
-  Install SQLite3 from https://www.sqlite.org/download.html
-  Database.db has the database information
-  command to execute the database - sqlite3 database.db  
-     
+  - Install SQLite3 from https://www.sqlite.org/download.html
+  - database.db has the database information
+  - Command to execute the database - sqlite3 database.db  
+
 - ### Run Instructions
 
   **To run/test the site locally:**

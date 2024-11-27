@@ -1,4 +1,4 @@
-'''
+"""
 MIT License
 
 Copyright (c) 2023 Shonil B, Akshada M, Rutuja R, Sakshi B
@@ -8,7 +8,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-'''
+"""
 
 from PyPDF2 import PdfFileReader
 import numpy as np
@@ -18,7 +18,7 @@ import openai
 
 
 def pdf_to_text(pdf_path, text_path):
-    with open(pdf_path, 'rb') as pdf_file:
+    with open(pdf_path, "rb") as pdf_file:
         # Create a PDF reader object
         pdf_reader = PdfFileReader(pdf_file)
 
@@ -31,15 +31,15 @@ def pdf_to_text(pdf_path, text_path):
             text += pdf_reader.pages[page_num].extract_text()
 
         # Open a text file in write mode and save the extracted text
-        with open(text_path, 'w', encoding='utf-8') as text_file:
+        with open(text_path, "w", encoding="utf-8") as text_file:
             text_file.write(text)
 
 
 # chatgpt pipeline
 def chatgpt(resume_textfile_path):
-    with open(resume_textfile_path, 'r') as file:
+    with open(resume_textfile_path, "r") as file:
         content = file.read()
-    openai_api_key = os.environ.get('OPENAI_API_KEY')
+    openai_api_key = os.environ.get("OPENAI_API_KEY")
 
     # Set the API endpoint
     api_url = "https://api.openai.com/v1/chat/completions"
@@ -47,14 +47,20 @@ def chatgpt(resume_textfile_path):
     # Set the request headers
     headers = {
         "Content-Type": "application/json",
-        "Authorization": f"Bearer {openai_api_key}"
+        "Authorization": f"Bearer {openai_api_key}",
     }
 
     # Set the request payload
     payload = {
         "model": "gpt-3.5-turbo",
-        "messages": [{"role":"system","content":"critique the following resume text on the basis of its conciseness, use of action words and numbers. Give suggestions on the 1. education section, then the 2. experiences section, then the 3. skills section and finally the 4. projects section. Give these suggestions on these four sections in the form of four paragraphs and label them Section 1, Section 2, Section 3 and Section 4 respectively, each separated by a line. Make sure each paragraph is atleast 50-70 words long."},{"role": "user", "content": content}],
-        "temperature": 0.7
+        "messages": [
+            {
+                "role": "system",
+                "content": "critique the following resume text on the basis of its conciseness, use of action words and numbers. Give suggestions on the 1. education section, then the 2. experiences section, then the 3. skills section and finally the 4. projects section. Give these suggestions on these four sections in the form of four paragraphs and label them Section 1, Section 2, Section 3 and Section 4 respectively, each separated by a line. Make sure each paragraph is atleast 50-70 words long.",
+            },
+            {"role": "user", "content": content},
+        ],
+        "temperature": 0.7,
     }
 
     # Make the POST request
@@ -66,7 +72,7 @@ def chatgpt(resume_textfile_path):
             # Print or process the response content
             print("API Response:")
             json_data = response.json()
-            final_suggestions = json_data['choices'][0]['message']['content']
+            final_suggestions = json_data["choices"][0]["message"]["content"]
             # print(final_suggestions)
             return final_suggestions
         else:
@@ -75,5 +81,3 @@ def chatgpt(resume_textfile_path):
 
     except Exception as e:
         print(f"An error occurred: {e}")
-
-

@@ -1,4 +1,4 @@
-'''
+"""
 MIT License
 
 Copyright (c) 2023 Shonil B, Akshada M, Rutuja R, Sakshi B
@@ -8,7 +8,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-'''
+"""
 
 import io
 import pdfminer
@@ -16,9 +16,11 @@ from pdfminer.converter import TextConverter
 from pdfminer.pdfinterp import PDFPageInterpreter
 from pdfminer.pdfinterp import PDFResourceManager
 from pdfminer.pdfpage import PDFPage
+
 # Docx resume
 import docx2txt
 import PyPDF2
+
 # Wordcloud
 import re
 import numpy as np
@@ -27,9 +29,9 @@ import nltk
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 
-nltk.download('stopwords')
-nltk.download('punkt')
-set(stopwords.words('english'))
+nltk.download("stopwords")
+nltk.download("punkt")
+set(stopwords.words("english"))
 from wordcloud import WordCloud
 from nltk.probability import FreqDist
 import matplotlib.pyplot as plt
@@ -65,7 +67,7 @@ def read_image_resume(file):
 
 def read_pdf_resume(file):
     # creating a pdf file object
-    pdfFileObj = open(file, 'rb')
+    pdfFileObj = open(file, "rb")
 
     # creating a pdf reader object
     pdfReader = PyPDF2.PdfFileReader(pdfFileObj)
@@ -85,7 +87,7 @@ def read_word_resume(word_doc):
     resume = docx2txt.process(word_doc)
     resume = str(resume)
     # print(resume)
-    text = ''.join(resume)
+    text = "".join(resume)
     text = text.replace("\n", "")
     print(text)
     if text:
@@ -93,47 +95,48 @@ def read_word_resume(word_doc):
 
 
 def clean_job_decsription(jd):
-    ''' a function to create a word cloud based on the input text parameter'''
+    """a function to create a word cloud based on the input text parameter"""
     ## Clean the Text
     # Lower
     clean_jd = jd.lower()
     # remove punctuation
-    clean_jd = re.sub(r'[^\w\s]', '', clean_jd)
+    clean_jd = re.sub(r"[^\w\s]", "", clean_jd)
     # remove trailing spaces
     clean_jd = clean_jd.strip()
     # remove numbers
-    clean_jd = re.sub('[0-9]+', '', clean_jd)
+    clean_jd = re.sub("[0-9]+", "", clean_jd)
     # tokenize
     clean_jd = word_tokenize(clean_jd)
     # remove stop words
-    stop = stopwords.words('english')
+    stop = stopwords.words("english")
     clean_jd = [w for w in clean_jd if not w in stop]
-    return (clean_jd)
+    return clean_jd
 
 
 def create_word_cloud(jd):
     corpus = jd
     fdist = FreqDist(corpus)
     # print(fdist.most_common(100))
-    words = ' '.join(corpus)
+    words = " ".join(corpus)
     words = words.split()
 
     # create a empty dictionary
     data = dict()
     #  Get frequency for each words where word is the key and the count is the value
-    for word in (words):
+    for word in words:
         word = word.lower()
         data[word] = data.get(word, 0) + 1
 
         # Sort the dictionary in reverse order to print first the most used terms
     dict(sorted(data.items(), key=operator.itemgetter(1), reverse=True))
-    word_cloud = WordCloud(width=800, height=800,
-                           background_color='white', max_words=500)
+    word_cloud = WordCloud(
+        width=800, height=800, background_color="white", max_words=500
+    )
     word_cloud.generate_from_frequencies(data)
 
 
 def get_resume_score(text):
-    cv = CountVectorizer(stop_words='english')
+    cv = CountVectorizer(stop_words="english")
     count_matrix = cv.fit_transform(text)
     count_matrix_array = count_matrix.toarray()
     print("\nSimilarity Scores:")
@@ -142,8 +145,12 @@ def get_resume_score(text):
     matchPercentage = cosine_similarity(count_matrix_array)[0][1] * 100
     matchPercentage = round(matchPercentage, 2)  # round to two decimal
 
-    print("Your resume matches about " + str(matchPercentage+50) + "% of the job description.")
-    return str(matchPercentage+50)
+    print(
+        "Your resume matches about "
+        + str(matchPercentage + 50)
+        + "% of the job description."
+    )
+    return str(matchPercentage + 50)
 
 
 def resume_analyzer(jobtext, file):
@@ -162,4 +169,3 @@ def resume_analyzer(jobtext, file):
 
     ## Get a Match score
     return get_resume_score(text)
-
