@@ -426,10 +426,7 @@ def upload():
 
         add_resume(database, relative_path, user_id)
 
-    # Return the rendered home page
-    return render_template(
-        "home.html", data=data, upcoming_events=upcoming_events, user=user
-    )
+    return redirect(url_for("student", data=user))
 
 @app.route("/student/analyze_resume", methods=["GET"])
 def view_ResumeAna():
